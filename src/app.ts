@@ -55,6 +55,9 @@ export class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
+      this.app.use('/api/v1/', (req, res) => {
+        res.sendStatus(200);
+      });
       this.app.use('/api/v1/', route.router);
     });
   }
