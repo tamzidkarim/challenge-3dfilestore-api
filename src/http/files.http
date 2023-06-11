@@ -1,0 +1,36 @@
+# baseURL
+@baseURL = http://localhost:3333/api/v1
+
+###
+# Find All Files
+GET {{ baseURL }}/files
+
+###
+# Transform File By Id
+GET {{ baseURL }}/files/transfomr/1?vector={"x":2,"y":2,"z":2}
+
+###
+# Find File By Id
+GET {{ baseURL }}/files/1?download=true
+
+###
+# Upload file
+POST {{ baseURL }}/files
+Content-Type: multipart/form-data
+
+{
+  "file": "file"
+}
+
+###
+# Modify file By Id
+PUT {{ baseURL }}/files/1
+Content-Type: application/json
+
+{
+  "name": "file",
+}
+
+###
+# Delete file By Id
+DELETE {{ baseURL }}/files/1

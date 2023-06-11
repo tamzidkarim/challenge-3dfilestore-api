@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: 3d-filestore API
+  description: 3d-filestore API docs
+  version: 1.0.0
+
+tags:
+  - name: files
+    description: files API
+
+paths:
+  # [GET] files
+  /api/v1/files:
+    get:
+      tags:
+        - files
+      summary: Get All Files
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+
+  # [POST] files
+    post:
+      tags:
+        - files
+      summary: Upload File
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [GET] files/transform/id
+  /api/v1/files/transform/{id}:
+    get:
+      tags:
+        - files
+      summary: Transform File By Id
+      parameters:
+        - name: id
+          in: path
+          description: File Id
+          required: true
+          type: string
+        - name: vector
+          in: query
+          description: Scale Vector
+          required: true
+          type: string
+          example: {"x":2,"y":2,"z":2}
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Not Found"
+        500:
+          description: "Server Error"
+
+  # [GET] files/id
+  /api/v1/files/{id}:
+    get:
+      tags:
+        - files
+      summary: Get/Download File By Id
+      parameters:
+        - name: id
+          in: path
+          description: File Id
+          required: true
+          type: string
+        - name: download
+          in: query
+          description: Download Flag
+          type: string
+          example: true
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Not Found"
+        500:
+          description: "Server Error"
+
+    # [PUT] files/id
+    put:
+      tags:
+        - files
+      summary: Rename File By Id
+      parameters:
+        - name: id
+          in: path
+          description: file Id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: file Data
+          required: true
+          schema:
+            $ref: "#/definitions/files"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Bad Request"
+        404:
+          description: "Not Found"
+        500:
+          description: "Server Error"
+
+    # [DELETE] files/id
+    delete:
+      tags:
+        - files
+      summary: Delete File By Id
+      parameters:
+        - name: id
+          in: path
+          description: user Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Not Found"
+        500:
+          description: "Server Error"
+
+
+# definitions
+definitions:
+  files:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: file Name
+
+schemes:
+  - https
+  - http
